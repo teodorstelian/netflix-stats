@@ -80,7 +80,7 @@
                     <tbody>
                         {% for title in stats.top_tv_shows %}
                         <tr>
-                            <td>{{ title.Title }}</td>
+                            <td>{{ title["Main Title"] }}</td>
                             <td>{{ title.Duration }}</td>
                         </tr>
                         {% endfor %}
@@ -140,7 +140,7 @@
                     <tbody>
                         {% for title in profile_stat.top_tv_shows %}
                         <tr>
-                            <td>{{ title.Title }}</td>
+                            <td>{{ title["Main Title"] }}</td>
                             <td>{{ title.Duration }}</td>
                         </tr>
                         {% endfor %}

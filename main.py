@@ -26,16 +26,24 @@ def calculate_stats(df):
 
     df["Duration (seconds)"] = df["Duration"].apply(duration_to_seconds)
 
+    # Extract main TV show title
+    def extract_main_title(title):
+        return title.split(":")[0] if "Episode" in title else title
+
+    df["Main Title"] = df["Title"].apply(extract_main_title)
+
     # Separate TV shows and movies
     df["Category"] = df["Title"].apply(lambda x: "TV Show" if "Episode" in x else "Movie")
 
     # Stats for TV shows
     tv_shows = df[df["Category"] == "TV Show"]
-    tv_watch_time = tv_shows["Duration (seconds)"].sum()
+    tv_shows_grouped = tv_shows.groupby("Main Title")["Duration (seconds)"].sum().reset_index()
+    tv_shows_grouped["Duration"] = tv_shows_grouped["Duration (seconds)"].apply(seconds_to_hms)
 
     # Stats for Movies
     movies = df[df["Category"] == "Movie"]
-    movie_watch_time = movies["Duration (seconds)"].sum()
+    movies_grouped = movies.groupby("Title")["Duration (seconds)"].sum().reset_index()
+    movies_grouped["Duration"] = movies_grouped["Duration (seconds)"].apply(seconds_to_hms)
 
     # Total watch time
     total_watch_time = df["Duration (seconds)"].sum()
@@ -43,24 +51,10 @@ def calculate_stats(df):
     minutes, seconds = divmod(remainder, 60)
 
     # Most-watched TV shows
-    top_tv_shows = (
-        tv_shows.groupby("Title")["Duration (seconds)"]
-        .sum()
-        .sort_values(ascending=False)
-        .head(10)
-        .reset_index()
-    )
-    top_tv_shows["Duration"] = top_tv_shows["Duration (seconds)"].apply(seconds_to_hms)
+    top_tv_shows = tv_shows_grouped.sort_values(by="Duration (seconds)", ascending=False).head(10).to_dict(orient="records")
 
     # Most-watched movies
-    top_movies = (
-        movies.groupby("Title")["Duration (seconds)"]
-        .sum()
-        .sort_values(ascending=False)
-        .head(10)
-        .reset_index()
-    )
-    top_movies["Duration"] = top_movies["Duration (seconds)"].apply(seconds_to_hms)
+    top_movies = movies_grouped.sort_values(by="Duration (seconds)", ascending=False).head(10).to_dict(orient="records")
 
     # Most-used devices
     top_devices = (
@@ -75,10 +69,10 @@ def calculate_stats(df):
     # Return stats as a dictionary
     return {
         "total_watch_time": f"{hours} hours, {minutes} minutes, {seconds} seconds",
-        "tv_watch_time": seconds_to_hms(tv_watch_time),
-        "movie_watch_time": seconds_to_hms(movie_watch_time),
-        "top_tv_shows": top_tv_shows.to_dict(orient="records"),
-        "top_movies": top_movies.to_dict(orient="records"),
+        "tv_watch_time": seconds_to_hms(tv_shows["Duration (seconds)"].sum()),
+        "movie_watch_time": seconds_to_hms(movies["Duration (seconds)"].sum()),
+        "top_tv_shows": top_tv_shows,
+        "top_movies": top_movies,
         "top_devices": top_devices.to_dict(orient="records"),
     }
 
