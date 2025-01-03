@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix Viewing Stats</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,108 +43,153 @@
         <form method="POST" enctype="multipart/form-data">
             <label for="file">Upload CSV File:</label>
             <input type="file" id="file" name="file" accept=".csv" required>
-            <button type="submit">Generate Stats</button>
+            <button type="submit" class="btn btn-primary">Generate Stats</button>
         </form>
         {% if error %}
         <p class="error">{{ error }}</p>
         {% endif %}
         {% if stats %}
-        <h2>Total Watch Time</h2>
-        <p>{{ stats.total_watch_time }}</p>
-
-        <h2>Top 10 Most-Watched TV Shows</h2>
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Duration</th>
-            </tr>
-            {% for title in stats.top_tv_shows %}
-            <tr>
-                <td>{{ title.Title }}</td>
-                <td>{{ title.Duration }}</td>
-            </tr>
+        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="tab-all" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">
+                    All Together
+                </a>
+            </li>
+            {% for profile, _ in profile_stats.items() %}
+            <li class="nav-item">
+                <a class="nav-link" id="tab-{{ profile }}" data-toggle="tab" href="#{{ profile }}" role="tab" aria-controls="{{ profile }}" aria-selected="false">
+                    {{ profile }}
+                </a>
+            </li>
             {% endfor %}
-        </table>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="tab-all">
+                <h3>All Together</h3>
+                <h4>Total Watch Time</h4>
+                <p>{{ stats.total_watch_time }}</p>
 
-        <h2>Top 10 Most-Watched Movies</h2>
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Duration</th>
-            </tr>
-            {% for title in stats.top_movies %}
-            <tr>
-                <td>{{ title.Title }}</td>
-                <td>{{ title.Duration }}</td>
-            </tr>
+                <h4>Top 10 Most-Watched TV Shows</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for title in stats.top_tv_shows %}
+                        <tr>
+                            <td>{{ title.Title }}</td>
+                            <td>{{ title.Duration }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h4>Top 10 Most-Watched Movies</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for title in stats.top_movies %}
+                        <tr>
+                            <td>{{ title.Title }}</td>
+                            <td>{{ title.Duration }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h4>Top 5 Most-Used Devices</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Device Type</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for device in stats.top_devices %}
+                        <tr>
+                            <td>{{ device['Device Type'] }}</td>
+                            <td>{{ device.Duration }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% for profile, profile_stat in profile_stats.items() %}
+            <div class="tab-pane fade" id="{{ profile }}" role="tabpanel" aria-labelledby="tab-{{ profile }}">
+                <h3>{{ profile }}</h3>
+                <h4>Total Watch Time</h4>
+                <p>{{ profile_stat.total_watch_time }}</p>
+
+                <h4>Top 10 Most-Watched TV Shows</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for title in profile_stat.top_tv_shows %}
+                        <tr>
+                            <td>{{ title.Title }}</td>
+                            <td>{{ title.Duration }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h4>Top 10 Most-Watched Movies</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for title in profile_stat.top_movies %}
+                        <tr>
+                            <td>{{ title.Title }}</td>
+                            <td>{{ title.Duration }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h4>Top 5 Most-Used Devices</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Device Type</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for device in profile_stat.top_devices %}
+                        <tr>
+                            <td>{{ device['Device Type'] }}</td>
+                            <td>{{ device.Duration }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {% endfor %}
-        </table>
-
-        <h2>Top 5 Most-Used Devices</h2>
-        <table>
-            <tr>
-                <th>Device Type</th>
-                <th>Duration</th>
-            </tr>
-            {% for device in stats.top_devices %}
-            <tr>
-                <td>{{ device['Device Type'] }}</td>
-                <td>{{ device.Duration }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-
-        {% if profile_stats %}
-        <h2>Profile Statistics</h2>
-        {% for profile, profile_stat in profile_stats.items() %}
-        <h3>{{ profile }}</h3>
-        <h4>Total Watch Time</h4>
-        <p>{{ profile_stat.total_watch_time }}</p>
-
-        <h4>Top 10 Most-Watched TV Shows</h4>
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Duration</th>
-            </tr>
-            {% for title in profile_stat.top_tv_shows %}
-            <tr>
-                <td>{{ title.Title }}</td>
-                <td>{{ title.Duration }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-
-        <h4>Top 10 Most-Watched Movies</h4>
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Duration</th>
-            </tr>
-            {% for title in profile_stat.top_movies %}
-            <tr>
-                <td>{{ title.Title }}</td>
-                <td>{{ title.Duration }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-
-        <h4>Top 5 Most-Used Devices</h4>
-        <table>
-            <tr>
-                <th>Device Type</th>
-                <th>Duration</th>
-            </tr>
-            {% for device in profile_stat.top_devices %}
-            <tr>
-                <td>{{ device['Device Type'] }}</td>
-                <td>{{ device.Duration }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% endfor %}
-        {% endif %}
+        </div>
         {% endif %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
