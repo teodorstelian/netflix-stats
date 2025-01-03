@@ -27,34 +27,47 @@ def calculate_stats(file_name):
 
         df["Duration (seconds)"] = df["Duration"].apply(duration_to_seconds)
 
+        # Separate TV shows and movies
+        df["Category"] = df["Title"].apply(lambda x: "TV Show" if "Episode" in x else "Movie")
+
+        # Stats for TV shows
+        tv_shows = df[df["Category"] == "TV Show"]
+        tv_watch_time = tv_shows["Duration (seconds)"].sum()
+
+        # Stats for Movies
+        movies = df[df["Category"] == "Movie"]
+        movie_watch_time = movies["Duration (seconds)"].sum()
+
         # Total watch time
         total_watch_time = df["Duration (seconds)"].sum()
         hours, remainder = divmod(total_watch_time, 3600)
         minutes, seconds = divmod(remainder, 60)
 
-        # Most-watched titles
-        top_titles = (
-            df.groupby("Title")["Duration (seconds)"]
+        # Most-watched TV shows
+        top_tv_shows = (
+            tv_shows.groupby("Title")["Duration (seconds)"]
             .sum()
             .sort_values(ascending=False)
-            .head(5)
+            .head(10)
             .reset_index()
         )
 
-        # Most-used devices
-        top_devices = (
-            df.groupby("Device Type")["Duration (seconds)"]
+        # Most-watched movies
+        top_movies = (
+            movies.groupby("Title")["Duration (seconds)"]
             .sum()
             .sort_values(ascending=False)
-            .head(5)
+            .head(10)
             .reset_index()
         )
 
         # Return stats as a dictionary
         return {
             "total_watch_time": f"{hours} hours, {minutes} minutes, {seconds} seconds",
-            "top_titles": top_titles.to_dict(orient="records"),
-            "top_devices": top_devices.to_dict(orient="records"),
+            "tv_watch_time": tv_watch_time,
+            "movie_watch_time": movie_watch_time,
+            "top_tv_shows": top_tv_shows.to_dict(orient="records"),
+            "top_movies": top_movies.to_dict(orient="records"),
         }
 
     except Exception as e:
