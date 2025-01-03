@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Viewing Stats</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #ff4c4c;
+        }
+        .error {
+            color: red;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Netflix Viewing Statistics</h1>
+        <form method="POST">
+            <label for="file_name">CSV File Name:</label>
+            <input type="text" id="file_name" name="file_name" placeholder="ViewingActivity.csv" required>
+            <button type="submit">Generate Stats</button>
+        </form>
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+        {% if stats %}
+        <h2>Total Watch Time</h2>
+        <p>{{ stats.total_watch_time }}</p>
+        <h2>Top 5 Most-Watched Titles</h2>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Duration (seconds)</th>
+            </tr>
+            {% for title in stats.top_titles %}
+            <tr>
+                <td>{{ title.Title }}</td>
+                <td>{{ title['Duration (seconds)'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <h2>Top 5 Most-Used Devices</h2>
+        <table>
+            <tr>
+                <th>Device Type</th>
+                <th>Duration (seconds)</th>
+            </tr>
+            {% for device in stats.top_devices %}
+            <tr>
+                <td>{{ device['Device Type'] }}</td>
+                <td>{{ device['Duration (seconds)'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+</body>
+</html>
