@@ -122,6 +122,14 @@
                         {% endfor %}
                     </tbody>
                 </table>
+
+                <h4>Visualizations</h4>
+                <div>
+                    {{ visuals.total_watch_time_per_profile|safe }}
+                    {{ visuals.top_tv_shows|safe }}
+                    {{ visuals.top_movies|safe }}
+                    {{ visuals.top_devices|safe }}
+                </div>
             </div>
             {% for profile, profile_stat in profile_stats.items() %}
             <div class="tab-pane fade" id="{{ profile }}" role="tabpanel" aria-labelledby="tab-{{ profile }}">

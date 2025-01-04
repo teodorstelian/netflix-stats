@@ -9,8 +9,9 @@ setup(
     url="https://yourprojecthomepage.example.com",
     packages=find_packages(),
     install_requires=[
-        "pandas",                  # Latest version (use with caution)
-        "flask"
+        "pandas",
+        "flask",
+        "plotly"
     ],
     extras_require={
         "dev": ["pytest", "black"],  # Optional dependencies for development

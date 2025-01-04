@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import pandas as pd
+import plotly.express as px
+import plotly.io as pio
 import os
 
 app = Flask(__name__)
@@ -85,10 +87,43 @@ def calculate_stats_per_profile(df):
         profile_stats[profile] = calculate_stats(profile_df)
     return profile_stats
 
+# Function to create visualizations
+def create_visualizations(df):
+    visuals = {}
+
+    # Total watch time per profile
+    total_watch_time_per_profile = df.groupby("Profile Name")["Duration (seconds)"].sum().reset_index()
+    total_watch_time_per_profile["Duration"] = total_watch_time_per_profile["Duration (seconds)"].apply(seconds_to_hms)
+    fig1 = px.bar(total_watch_time_per_profile, x="Profile Name", y="Duration (seconds)", title="Total Watch Time per Profile")
+    visuals["total_watch_time_per_profile"] = pio.to_html(fig1, full_html=False)
+
+    # Most-watched TV shows
+    tv_shows = df[df["Category"] == "TV Show"]
+    top_tv_shows = tv_shows.groupby("Main Title")["Duration (seconds)"].sum().reset_index().sort_values(by="Duration (seconds)", ascending=False).head(10)
+    top_tv_shows["Duration"] = top_tv_shows["Duration (seconds)"].apply(seconds_to_hms)
+    fig2 = px.bar(top_tv_shows, x="Main Title", y="Duration (seconds)", title="Top 10 Most-Watched TV Shows")
+    visuals["top_tv_shows"] = pio.to_html(fig2, full_html=False)
+
+    # Most-watched Movies
+    movies = df[df["Category"] == "Movie"]
+    top_movies = movies.groupby("Title")["Duration (seconds)"].sum().reset_index().sort_values(by="Duration (seconds)", ascending=False).head(10)
+    top_movies["Duration"] = top_movies["Duration (seconds)"].apply(seconds_to_hms)
+    fig3 = px.bar(top_movies, x="Title", y="Duration (seconds)", title="Top 10 Most-Watched Movies")
+    visuals["top_movies"] = pio.to_html(fig3, full_html=False)
+
+    # Most-used devices
+    top_devices = df.groupby("Device Type")["Duration (seconds)"].sum().reset_index().sort_values(by="Duration (seconds)", ascending=False).head(5)
+    top_devices["Duration"] = top_devices["Duration (seconds)"].apply(seconds_to_hms)
+    fig4 = px.pie(top_devices, names="Device Type", values="Duration (seconds)", title="Top 5 Most-Used Devices")
+    visuals["top_devices"] = pio.to_html(fig4, full_html=False)
+
+    return visuals
+
 @app.route("/", methods=["GET", "POST"])
 def home():
     stats = None
     profile_stats = None
+    visuals = None
     error = None
     if request.method == "POST":
         if 'file' not in request.files:
@@ -103,9 +138,10 @@ def home():
                 df = pd.read_csv(file_path)
                 stats = calculate_stats(df)
                 profile_stats = calculate_stats_per_profile(df)
+                visuals = create_visualizations(df)
             except Exception as e:
                 error = str(e)
-    return render_template("index.html", stats=stats, profile_stats=profile_stats, error=error)
+    return render_template("index.html", stats=stats, profile_stats=profile_stats, visuals=visuals, error=error)
 
 if __name__ == "__main__":
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
