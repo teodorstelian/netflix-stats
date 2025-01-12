@@ -24,9 +24,14 @@ def calculate_stats(df):
     df["Duration (seconds)"] = df["Duration"].apply(duration_to_seconds)
 
     def extract_main_title(title):
-        return title.split(":")[0] if "Episode" in title else title
+        parts = title.split(":")
+        for i, part in enumerate(parts):
+            if "Season" in part:
+                return ":".join(parts[:i]).strip()
+        return parts[0]
 
     df["Main Title"] = df["Title"].apply(extract_main_title)
+
     df["Category"] = df["Title"].apply(lambda x: "TV Show" if "Episode" in x else "Movie")
 
     tv_shows = df[df["Category"] == "TV Show"]
@@ -41,7 +46,7 @@ def calculate_stats(df):
     hours, remainder = divmod(total_watch_time, 3600)
     minutes, seconds = divmod(remainder, 60)
 
-    top_tv_shows = tv_shows_grouped.sort_values(by="Duration (seconds)", ascending=False).head(10).to_dict(orient="records")
+    top_tv_shows = tv_shows_grouped.sort_values(by="Duration (seconds)", ascending=False).head(30).to_dict(orient="records")
     top_movies = movies_grouped.sort_values(by="Duration (seconds)", ascending=False).head(10).to_dict(orient="records")
 
     top_devices = df.groupby("Device Type")["Duration (seconds)"].sum().sort_values(ascending=False).head(5).reset_index()
