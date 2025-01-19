@@ -15,12 +15,9 @@ def list_uploaded_files():
             os.path.isfile(os.path.join(UPLOAD_FOLDER, f)) and f.endswith('.csv')]
 
 
-# Home route for uploading CSV and displaying overall stats
+# Home route for uploading CSV and displaying available files
 @app.route("/", methods=["GET", "POST"])
 def home():
-    stats = None
-    profile_stats = None
-    visuals = None
     error = None
     files = list_uploaded_files()
 
@@ -28,7 +25,7 @@ def home():
         # Handle file selection from existing files
         selected_file = request.form.get("existing_file")
         if selected_file:
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], selected_file)
+            return redirect(url_for('stats', filename=selected_file))
         else:
             # Handle file upload
             if 'file' not in request.files:
@@ -40,24 +37,26 @@ def home():
                 filename = secure_filename(file.filename)
                 file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(file_path)
+                return redirect(url_for('stats', filename=filename))
 
-        if not error:
-            try:
-                df = pd.read_csv(file_path)
-                stats = calculate_stats(df)
-                profile_stats = calculate_stats_per_profile(df)
-                visuals = create_visualizations(df)
-            except Exception as e:
-                error = str(e)
+    return render_template("index.html", error=error, files=files)
 
-    return render_template("index.html", stats=stats, profile_stats=profile_stats, visuals=visuals, error=error,
-                           files=files)
+
+# Route for viewing detailed statistics and visualizations
+@app.route("/stats/<filename>", methods=["GET"])
+def stats(filename):
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    df = pd.read_csv(file_path)
+    stats = calculate_stats(df)
+    profile_stats = calculate_stats_per_profile(df)
+    visuals = create_visualizations(df)
+    return render_template("stats.html", stats=stats, profile_stats=profile_stats, visuals=visuals, filename=filename)
 
 
 # Route for profile-specific statistics and visualizations
-@app.route("/profile/<profile_name>", methods=["GET"])
-def profile(profile_name):
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], "ViewingActivity.csv")  # Replace with actual file path
+@app.route("/profile/<profile_name>/<filename>", methods=["GET"])
+def profile(profile_name, filename):
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     df = pd.read_csv(file_path)
     profile_df = df[df["Profile Name"] == profile_name]
     stats = calculate_stats(profile_df)
