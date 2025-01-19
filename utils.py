@@ -46,7 +46,7 @@ def calculate_stats(df):
     hours, remainder = divmod(total_watch_time, 3600)
     minutes, seconds = divmod(remainder, 60)
 
-    top_tv_shows = tv_shows_grouped.sort_values(by="Duration (seconds)", ascending=False).head(30).to_dict(orient="records")
+    top_tv_shows = tv_shows_grouped.sort_values(by="Duration (seconds)", ascending=False).head(10).to_dict(orient="records")
     top_movies = movies_grouped.sort_values(by="Duration (seconds)", ascending=False).head(10).to_dict(orient="records")
 
     top_devices = df.groupby("Device Type")["Duration (seconds)"].sum().sort_values(ascending=False).head(5).reset_index()
