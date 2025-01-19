@@ -42,15 +42,25 @@ def home():
     return render_template("index.html", error=error, files=files)
 
 
-# Route for viewing detailed statistics and visualizations
+# Route for viewing detailed statistics
 @app.route("/stats/<filename>", methods=["GET"])
 def stats(filename):
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     df = pd.read_csv(file_path)
     stats = calculate_stats(df)
     profile_stats = calculate_stats_per_profile(df)
+    return render_template("stats.html", stats=stats, profile_stats=profile_stats, filename=filename)
+
+
+# Route for viewing visualizations
+@app.route("/visualizations/<filename>", methods=["GET"])
+def visualizations(filename):
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    df = pd.read_csv(file_path)
+    # Ensure Duration (seconds) column is created by invoking calculate_stats first
+    calculate_stats(df)
     visuals = create_visualizations(df)
-    return render_template("stats.html", stats=stats, profile_stats=profile_stats, visuals=visuals, filename=filename)
+    return render_template("visualizations.html", visuals=visuals, filename=filename)
 
 
 # Route for profile-specific statistics and visualizations

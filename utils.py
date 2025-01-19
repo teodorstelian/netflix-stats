@@ -37,17 +37,19 @@ def calculate_stats(df):
     tv_shows = df[df["Category"] == "TV Show"]
     tv_shows_grouped = tv_shows.groupby("Main Title")["Duration (seconds)"].sum().reset_index()
     tv_shows_grouped["Duration"] = tv_shows_grouped["Duration (seconds)"].apply(seconds_to_hms)
+    tv_shows_grouped["Rank"] = tv_shows_grouped["Duration (seconds)"].rank(method="min", ascending=False).astype(int)
 
     movies = df[df["Category"] == "Movie"]
     movies_grouped = movies.groupby("Title")["Duration (seconds)"].sum().reset_index()
     movies_grouped["Duration"] = movies_grouped["Duration (seconds)"].apply(seconds_to_hms)
+    movies_grouped["Rank"] = movies_grouped["Duration (seconds)"].rank(method="min", ascending=False).astype(int)
 
     total_watch_time = df["Duration (seconds)"].sum()
     hours, remainder = divmod(total_watch_time, 3600)
     minutes, seconds = divmod(remainder, 60)
 
-    top_tv_shows = tv_shows_grouped.sort_values(by="Duration (seconds)", ascending=False).head(10).to_dict(orient="records")
-    top_movies = movies_grouped.sort_values(by="Duration (seconds)", ascending=False).head(10).to_dict(orient="records")
+    top_tv_shows = tv_shows_grouped.sort_values(by="Rank").head(10).to_dict(orient="records")
+    top_movies = movies_grouped.sort_values(by="Rank").head(10).to_dict(orient="records")
 
     top_devices = df.groupby("Device Type")["Duration (seconds)"].sum().sort_values(ascending=False).head(5).reset_index()
     top_devices["Duration"] = top_devices["Duration (seconds)"].apply(seconds_to_hms)
@@ -60,6 +62,7 @@ def calculate_stats(df):
         "top_movies": top_movies,
         "top_devices": top_devices.to_dict(orient="records"),
     }
+
 
 def calculate_stats_per_profile(df):
     profiles = df["Profile Name"].unique()
