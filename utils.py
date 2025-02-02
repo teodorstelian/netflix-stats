@@ -2,6 +2,9 @@ import pandas as pd
 import plotly.express as px
 import plotly.io as pio
 
+from settings import COLLECTIONS, NUMBER_RANKING
+
+
 # Utility functions
 def seconds_to_hms(seconds):
     hours, remainder = divmod(seconds, 3600)
@@ -30,7 +33,14 @@ def calculate_stats(df):
                 return ":".join(parts[:i]).strip()
         return parts[0]
 
+    def create_collection(title):
+        for collection, titles in COLLECTIONS.items():
+            if any(t in title for t in titles):
+                return collection
+        return None
+
     df["Main Title"] = df["Title"].apply(extract_main_title)
+    df["Collection"] = df["Title"].apply(create_collection)
 
     df["Category"] = df["Title"].apply(lambda x: "TV Show" if "Episode" in x else "Movie")
 
@@ -44,15 +54,22 @@ def calculate_stats(df):
     movies_grouped["Duration"] = movies_grouped["Duration (seconds)"].apply(seconds_to_hms)
     movies_grouped["Rank"] = movies_grouped["Duration (seconds)"].rank(method="min", ascending=False).astype(int)
 
+    collections = df[df["Collection"].notna()]
+    collections_grouped = collections.groupby("Collection")["Duration (seconds)"].sum().reset_index()
+    collections_grouped["Duration"] = collections_grouped["Duration (seconds)"].apply(seconds_to_hms)
+    collections_grouped["Rank"] = collections_grouped["Duration (seconds)"].rank(method="min", ascending=False).astype(int)
+
     total_watch_time = df["Duration (seconds)"].sum()
     hours, remainder = divmod(total_watch_time, 3600)
     minutes, seconds = divmod(remainder, 60)
 
-    top_tv_shows = tv_shows_grouped.sort_values(by="Rank").head(10).to_dict(orient="records")
-    top_movies = movies_grouped.sort_values(by="Rank").head(10).to_dict(orient="records")
+    top_tv_shows = tv_shows_grouped.sort_values(by="Rank").head(NUMBER_RANKING).to_dict(orient="records")
+    top_movies = movies_grouped.sort_values(by="Rank").head(NUMBER_RANKING).to_dict(orient="records")
 
     top_devices = df.groupby("Device Type")["Duration (seconds)"].sum().sort_values(ascending=False).head(5).reset_index()
     top_devices["Duration"] = top_devices["Duration (seconds)"].apply(seconds_to_hms)
+
+    top_collections = collections_grouped.sort_values(by="Rank").head(NUMBER_RANKING).to_dict(orient="records")
 
     return {
         "total_watch_time": f"{hours} hours, {minutes} minutes, {seconds} seconds",
@@ -61,8 +78,8 @@ def calculate_stats(df):
         "top_tv_shows": top_tv_shows,
         "top_movies": top_movies,
         "top_devices": top_devices.to_dict(orient="records"),
+        "top_collections": top_collections,
     }
-
 
 def calculate_stats_per_profile(df):
     profiles = df["Profile Name"].unique()
@@ -96,5 +113,11 @@ def create_visualizations(df):
     top_devices["Duration (hours)"] = top_devices["Duration (seconds)"].apply(seconds_to_hours)
     fig4 = px.pie(top_devices, names="Device Type", values="Duration (hours)", title="Top 5 Most-Used Devices (in hours)")
     visuals["top_devices"] = pio.to_html(fig4, full_html=False)
+
+    collections = df[df["Collection"].notna()]
+    top_collections = collections.groupby("Collection")["Duration (seconds)"].sum().reset_index().sort_values(by="Duration (seconds)", ascending=False).head(10)
+    top_collections["Duration (hours)"] = top_collections["Duration (seconds)"].apply(seconds_to_hours)
+    fig5 = px.bar(top_collections, x="Collection", y="Duration (hours)", title="Top 10 Collections (in hours)")
+    visuals["top_collections"] = pio.to_html(fig5, full_html=False)
 
     return visuals

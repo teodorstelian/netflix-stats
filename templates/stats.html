@@ -90,6 +90,26 @@
                     </tbody>
                 </table>
 
+                <h4>Top 10 Collections</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Collection</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for collection in stats.top_collections %}
+                        <tr>
+                            <td>{{ collection.Rank }}</td>
+                            <td>{{ collection["Collection"] }}</td>
+                            <td>{{ collection.Duration }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
                 <h4>Top 5 Most-Used Devices</h4>
                 <table class="table table-striped">
                     <thead>
@@ -149,6 +169,26 @@
                             <td>{{ title.Rank }}</td>
                             <td>{{ title.Title }}</td>
                             <td>{{ title.Duration }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <h4>Top 10 Collections</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Collection</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for collection in profile_stat.top_collections %}
+                        <tr>
+                            <td>{{ collection.Rank }}</td>
+                            <td>{{ collection["Collection"] }}</td>
+                            <td>{{ collection.Duration }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

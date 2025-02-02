@@ -63,6 +63,24 @@
             </tbody>
         </table>
 
+        <h3>Top 10 Collections</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Collection</th>
+                    <th>Duration (hours)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for collection in stats.top_collections %}
+                <tr>
+                    <td>{{ collection.Collection }}</td>
+                    <td>{{ collection.Duration }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
         <h3>Top 5 Most-Used Devices</h3>
         <table class="table table-striped">
             <thead>
@@ -87,6 +105,7 @@
             {{ visuals.top_tv_shows|safe }}
             {{ visuals.top_movies|safe }}
             {{ visuals.top_devices|safe }}
+            {{ visuals.top_collections|safe }}
         </div>
     </div>
 
