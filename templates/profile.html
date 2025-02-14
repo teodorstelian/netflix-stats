@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile_name }}'s Viewing Stats</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            color: #ff4c4c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ profile_name }}'s Viewing Statistics</h1>
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Dashboard</a>
+
+        <h3>Total Watch Time</h3>
+        <p>{{ stats.total_watch_time }}</p>
+
+        <h3>Top 10 Most-Watched TV Shows</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Duration (hours)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for title in stats.top_tv_shows %}
+                <tr>
+                    <td>{{ title["Main Title"] }}</td>
+                    <td>{{ title.Duration }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Top 10 Most-Watched Movies</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Duration (hours)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for title in stats.top_movies %}
+                <tr>
+                    <td>{{ title.Title }}</td>
+                    <td>{{ title.Duration }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Top 10 Collections</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Collection</th>
+                    <th>Duration (hours)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for collection in stats.top_collections %}
+                <tr>
+                    <td>{{ collection.Collection }}</td>
+                    <td>{{ collection.Duration }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Top 5 Most-Used Devices</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Device Type</th>
+                    <th>Duration (hours)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for device in stats.top_devices %}
+                <tr>
+                    <td>{{ device['Device Type'] }}</td>
+                    <td>{{ device.Duration }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Visualizations</h3>
+        <div>
+            {{ visuals.total_watch_time_per_profile|safe }}
+            {{ visuals.top_tv_shows|safe }}
+            {{ visuals.top_movies|safe }}
+            {{ visuals.top_devices|safe }}
+            {{ visuals.top_collections|safe }}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
