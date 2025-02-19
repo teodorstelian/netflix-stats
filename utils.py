@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import plotly.io as pio
+import os
 
 from settings import COLLECTIONS, NUMBER_RANKING
 
@@ -71,6 +72,8 @@ def calculate_stats(df):
 
     top_collections = collections_grouped.sort_values(by="Rank").head(NUMBER_RANKING).to_dict(orient="records")
 
+    export_tv_shows_and_movies_to_txt(df)
+
     return {
         "total_watch_time": f"{hours} hours, {minutes} minutes, {seconds} seconds",
         "tv_watch_time": seconds_to_hms(tv_shows["Duration (seconds)"].sum()),
@@ -80,6 +83,60 @@ def calculate_stats(df):
         "top_devices": top_devices.to_dict(orient="records"),
         "top_collections": top_collections,
     }
+import os
+
+
+def export_tv_shows_and_movies_to_txt(df, output_file="tv_shows_movies.txt"):
+    # Terms to exclude
+    exclusion_terms = ["hook", "trailer", "season", "teaser", "clip"]
+
+    # Helper function to filter out unwanted entries
+    def filter_entries(entries):
+        return {entry for entry in entries
+                if not any(term.lower() in entry.lower() for term in exclusion_terms)}
+
+    # Extract TV shows
+    tv_shows = set(df[df["Category"] == "TV Show"]["Main Title"].unique())
+    # Extract Movies
+    movies = set(df[df["Category"] == "Movie"]["Title"].unique())
+
+    # Filter out entries containing exclusion terms
+    tv_shows = filter_entries(tv_shows)
+    movies = filter_entries(movies)
+
+    # Prepare to merge with existing file content
+    existing_tv_shows = set()
+    existing_movies = set()
+
+    if os.path.exists(output_file):
+        with open(output_file, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+
+        is_tv_show_section = True  # To identify whether we are parsing TV Shows or Movies
+        for line in lines:
+            line = line.strip()
+            if line == "Movies:":
+                is_tv_show_section = False
+            elif line.startswith("- "):  # Entries start with "- "
+                if is_tv_show_section:
+                    existing_tv_shows.add(line[2:])  # Add to TV shows
+                else:
+                    existing_movies.add(line[2:])  # Add to Movies
+
+    # Merge existing and new entries
+    all_tv_shows = existing_tv_shows.union(tv_shows)
+    all_movies = existing_movies.union(movies)
+
+    # Write the updated list back to the file
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write("TV Shows:\n")
+        f.writelines(f"- {tv_show}\n" for tv_show in sorted(all_tv_shows))
+
+        f.write("\nMovies:\n")
+        f.writelines(f"- {movie}\n" for movie in sorted(all_movies))
+
+    print(f"TV shows and movies updated (filtered unwanted entries) in {output_file}")
+
 
 def calculate_stats_per_profile(df):
     profiles = df["Profile Name"].unique()
