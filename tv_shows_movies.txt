@@ -8,14 +8,18 @@ TV Shows:
 - Aggretsuko
 - Alchemy of Souls
 - Alice in Borderland
+- American Murder: Gabby Petito
+- American Murder: Laci Peterson
 - Anne with an E
 - Arcane
 - BASTARD‼ -Heavy Metal, Dark Fantasy-
 - BEASTARS
 - BLUE EYE SAMURAI
+- Backlash
 - Bad Vegan
 - Bee and PuppyCat
 - Ben 10
+- Better Than Us
 - Black Clover
 - Black Knight
 - Black Mirror
@@ -45,6 +49,8 @@ TV Shows:
 - DAHMER
 - Dear Child
 - Destined with You
+- Devil May Cry
+- Devil in Ohio
 - Dexter
 - Doom at Your Service
 - Doona!
@@ -52,7 +58,9 @@ TV Shows:
 - Exploding Kittens
 - Extracurricular
 - Falling Into Your Smile
+- Flower of Evil
 - Fool Me Once
+- Friendly Rivalry
 - From
 - From Me to You: Kimi ni Todoke
 - GOOD NIGHT WORLD
@@ -62,11 +70,13 @@ TV Shows:
 - Half Bad: The Bastard Son & The Devil Himself
 - Happiness
 - Heartstopper
+- Hell for You
 - Hellbound
 - Hierarchy
 - House, M.D.
 - How to Sell Drugs Online (Fast)
 - I AM A KILLER
+- Inside
 - Inside Job
 - It's Okay to Not Be Okay
 - Itaewon Class
@@ -83,6 +93,7 @@ TV Shows:
 - Lookism
 - Lost
 - Love Between Fairy and Devil
+- Love Game in Eastern Fantasy
 - Love Is Blind
 - Love Is Blind, Habibi
 - Love Is Blind: Germany
@@ -117,9 +128,11 @@ TV Shows:
 - Ragnarok
 - Record of Ragnarok
 - Red Rose
+- Reincarnated as a Sword
 - Royal Rumble
 - SAINT SEIYA
 - SPY x FAMILY
+- Sakuna: Of Rice and Ruin
 - See You in My 19th Life
 - Seven Seconds
 - Sexify
@@ -137,8 +150,12 @@ TV Shows:
 - Terminator Zero
 - The 8 Show
 - The Accident
+- The Apothecary Diaries
 - The Asunta Case
+- The Circle
+- The Eminence in Shadow
 - The Family
+- The First Frost
 - The Frog
 - The Glory
 - The Good Bad Mother
@@ -148,7 +165,9 @@ TV Shows:
 - The King's Affection
 - The Midnight Club
 - The Order
+- The Potato Lab
 - The Resident
+- The Rising of the Shield Hero
 - The Rookie
 - The Sandman
 - The Shannara Chronicles
@@ -160,6 +179,7 @@ TV Shows:
 - The Witcher
 - Together
 - Tomorrow
+- Too Hot to Handle
 - True Beauty
 - Twenty Five Twenty One
 - Unbelievable
@@ -167,7 +187,12 @@ TV Shows:
 - Vampire in the Garden
 - Van Helsing
 - Vincenzo
+- Violet Evergarden
+- WWE Elimination Chamber
+- WWE SmackDown
+- WWE WrestleMania
 - Warrior Nun
+- Weak Hero
 - Wednesday
 - When They See Us
 - When the Phone Rings
@@ -182,7 +207,10 @@ TV Shows:
 Movies:
 - 22 July
 - A Whisker Away
+- American Murder: The Family Next Door
 - Annihilation
+- Bad Influence
+- Blood Red Sky
 - Bogotá: City of the Lost
 - Buba
 - Bubble
@@ -272,11 +300,13 @@ Movies:
 - Texas Chainsaw Massacre
 - The Black Phone
 - The Craigslist Killer
+- The Day of the Lord
 - The Deliverance
 - The Devil on Trial
 - The Good Nurse
 - The Hatred
 - The Invisible Man
+- The Perfect Candidate
 - The Perfect Date
 - The Platform
 - The Platform 2
@@ -295,5 +325,6 @@ Movies:
 - To All the Boys I’ve Loved Before
 - To All the Boys: P.S. I Still Love You
 - Unlocked
+- Violet Evergarden the Movie
 - Violet Evergarden: Eternity and the Auto Memory Doll
 - Zodiac

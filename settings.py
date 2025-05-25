@@ -17,6 +17,21 @@ COLLECTIONS = {
                 "To All the Boys I’ve Loved Before",
                 "To All the Boys: P.S. I Still Love You",
             ],
+
+            "American Murder":
+                [
+                    "American Murder: Gabby Petito",
+                    "American Murder: Laci Peterson",
+                    "American Murder: The Family Next Door"
+                ],
+
+            "WWE PPVs":
+                [
+                    "WWE Elimination Chamber",
+                    "WWE WrestleMania",
+                    "Royal Rumble",
+                    "Backlash"
+                ]
         }
 
-NUMBER_RANKING = 10
+NUMBER_RANKING = 50
