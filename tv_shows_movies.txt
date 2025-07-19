@@ -10,6 +10,7 @@ TV Shows:
 - Alice in Borderland
 - American Murder: Gabby Petito
 - American Murder: Laci Peterson
+- Angel's Last Mission
 - Anne with an E
 - Arcane
 - BASTARD‼ -Heavy Metal, Dark Fantasy-
@@ -19,6 +20,7 @@ TV Shows:
 - Bad Vegan
 - Bee and PuppyCat
 - Ben 10
+- Bet
 - Better Than Us
 - Black Clover
 - Black Knight
@@ -44,9 +46,11 @@ TV Shows:
 - Cowboy Bebop
 - Cracow Monsters
 - Crash Course in Romance
+- Crime Scene
 - Cunk On Earth
 - Cyberpunk: Edgerunners
 - DAHMER
+- DAN DA DAN
 - Dear Child
 - Destined with You
 - Devil May Cry
@@ -58,12 +62,15 @@ TV Shows:
 - Exploding Kittens
 - Extracurricular
 - Falling Into Your Smile
+- Fate/Apocrypha
 - Flower of Evil
 - Fool Me Once
 - Friendly Rivalry
+- Frieren: Beyond Journey's End
 - From
 - From Me to You: Kimi ni Todoke
 - GOOD NIGHT WORLD
+- Ginny & Georgia
 - Girl from Nowhere
 - Goodbye Earth
 - Gyeongseong Creature
@@ -78,12 +85,15 @@ TV Shows:
 - I AM A KILLER
 - Inside
 - Inside Job
+- Is It Cake?
 - It's Okay to Not Be Okay
 - Itaewon Class
 - Jujutsu Kaisen
 - Junji Ito Maniac: Japanese Tales of the Macabre
 - Juvenile Justice
 - KAOS
+- Kakegurui
+- Karma
 - Kim's Convenience
 - King the Land
 - Kingdom
@@ -107,6 +117,7 @@ TV Shows:
 - Marcella
 - Marianne
 - Mask Girl
+- Mercy For None
 - Midnight Mass
 - Miss Night and Day
 - Monster
@@ -119,13 +130,16 @@ TV Shows:
 - Nevertheless,
 - Obsession
 - One of Us Is Lying
+- Our Unwritten Seoul
 - Ozark
+- Pantheon
 - Parasyte
 - Parasyte: The Maxim
 - Pose
 - Prison Break
 - Queen of Tears
 - Ragnarok
+- Raising Voices
 - Record of Ragnarok
 - Red Rose
 - Reincarnated as a Sword
@@ -152,6 +166,7 @@ TV Shows:
 - The Accident
 - The Apothecary Diaries
 - The Asunta Case
+- The Boss Baby: Back in Business
 - The Circle
 - The Eminence in Shadow
 - The Family
@@ -207,6 +222,7 @@ TV Shows:
 Movies:
 - 22 July
 - A Whisker Away
+- A Whisker Away_PVS_MEGA
 - American Murder: The Family Next Door
 - Annihilation
 - Bad Influence
@@ -224,6 +240,7 @@ Movies:
 - Cinemagraph: Rainbow Six: SMOL
 - Cinemagraph: Selling Sunset
 - Cinemagraph: Squid Game: Unleashed
+- Cinemagraph: The Electric State: Kid Cosmo
 - Cleveland Abduction
 - Corpse Bride
 - Cunk on Life
@@ -299,10 +316,13 @@ Movies:
 - Spider-Man: Into the Spider-Verse
 - Texas Chainsaw Massacre
 - The Black Phone
+- The Boss Baby
+- The Boss Baby: Christmas Bonus
 - The Craigslist Killer
 - The Day of the Lord
 - The Deliverance
 - The Devil on Trial
+- The Emoji Movie - CLM 1
 - The Good Nurse
 - The Hatred
 - The Invisible Man
@@ -324,7 +344,10 @@ Movies:
 - To All The Boys: Always And Forever
 - To All the Boys I’ve Loved Before
 - To All the Boys: P.S. I Still Love You
+- Unknown Title
 - Unlocked
 - Violet Evergarden the Movie
 - Violet Evergarden: Eternity and the Auto Memory Doll
+- Woman of the Hour
+- Ziam
 - Zodiac

@@ -8,6 +8,11 @@ COLLECTIONS = {
             ],
             "Parasyte": ["Parasyte", "Parasyte: The Maxim"],
 
+            "WWE Weekly TV":
+                [
+                    "WWE Smackdown",
+                    "WWE RAW"
+                ],
 
             # Movies
             "The Platform": ["The Platform", "The Platform 2"],
