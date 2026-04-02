@@ -6,13 +6,20 @@ COLLECTIONS = {
                 "Love Is Blind: Germany",
                 "Love Is Blind, Habibi",
             ],
+            "Too Hot to Handle":
+            [
+                "Too Hot to Handle",
+                "Too Hot to Handle: Germany"
+            ],
             "Parasyte": ["Parasyte", "Parasyte: The Maxim"],
 
             "WWE Weekly TV":
                 [
                     "WWE Smackdown",
-                    "WWE RAW"
+                    "Raw",
+                    "WWE NXT"
                 ],
+            "Monsters": ["DAHMER", "Monster: The Ed Gein Story","Monsters"],
 
             # Movies
             "The Platform": ["The Platform", "The Platform 2"],
@@ -35,8 +42,15 @@ COLLECTIONS = {
                     "WWE Elimination Chamber",
                     "WWE WrestleMania",
                     "Royal Rumble",
-                    "Backlash"
-                ]
+                    "Backlash",
+                    "WWE SummerSlam"
+                ],
+
+            "WWE Documentaries":
+                [
+                    "WWE: Unreal",
+                    "Mr. McMahon"
+                ],
         }
 
 NUMBER_RANKING = 50
