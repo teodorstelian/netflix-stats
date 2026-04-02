@@ -1,7 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
 import pandas as pd
 import os
-from utils import calculate_stats, calculate_stats_per_profile, create_visualizations
+from utils import (
+    calculate_stats,
+    calculate_stats_per_profile,
+    create_visualizations,
+    calculate_continue_watching,
+)
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -47,10 +52,18 @@ def home():
 def stats(filename):
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     df = pd.read_csv(file_path)
+
     stats = calculate_stats(df)
     profile_stats = calculate_stats_per_profile(df)
-    return render_template("stats.html", stats=stats, profile_stats=profile_stats, filename=filename)
+    continue_watching = calculate_continue_watching(df)
 
+    return render_template(
+        "stats.html",
+        stats=stats,
+        profile_stats=profile_stats,
+        continue_watching=continue_watching,
+        filename=filename
+    )
 
 # Route for viewing visualizations
 @app.route("/visualizations/<filename>", methods=["GET"])

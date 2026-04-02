@@ -9,26 +9,92 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f8f9fa;
         }
+
         .container {
-            max-width: 800px;
+            max-width: 1100px;
             margin: auto;
         }
+
         h1 {
             color: #ff4c4c;
+            margin-bottom: 20px;
         }
+
+        h3 {
+            margin-top: 25px;
+            color: #343a40;
+        }
+
+        h4 {
+            margin-top: 25px;
+            color: #495057;
+        }
+
         .button-group {
             margin-bottom: 20px;
+        }
+
+        .continue-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .continue-card h5 {
+            margin-bottom: 10px;
+            color: #212529;
+        }
+
+        .continue-meta {
+            margin-bottom: 4px;
+            color: #555;
+        }
+
+        .continue-empty {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .summary-box {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #495057;
+        }
+
+        .nav-tabs .nav-link.active {
+            font-weight: bold;
+        }
+
+        .tab-pane {
+            padding-top: 20px;
+        }
+
+        .table {
+            background-color: #ffffff;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Netflix Viewing Statistics for {{ filename }}</h1>
+
         <div class="button-group">
             <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Dashboard</a>
             <a href="{{ url_for('visualizations', filename=filename) }}" class="btn btn-primary">View Visualizations</a>
         </div>
+
         {% if stats %}
         <ul class="nav nav-tabs" id="profileTabs" role="tablist">
             <li class="nav-item">
@@ -37,18 +103,47 @@
                 </a>
             </li>
             {% for profile, _ in profile_stats.items() %}
+            {% set safe_profile = profile|replace(' ', '_')|replace('/', '_') %}
             <li class="nav-item">
-                <a class="nav-link" id="tab-{{ profile }}" data-toggle="tab" href="#{{ profile }}" role="tab" aria-controls="{{ profile }}" aria-selected="false">
+                <a class="nav-link" id="tab-{{ safe_profile }}" data-toggle="tab" href="#{{ safe_profile }}" role="tab" aria-controls="{{ safe_profile }}" aria-selected="false">
                     {{ profile }}
                 </a>
             </li>
             {% endfor %}
         </ul>
+
         <div class="tab-content">
             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="tab-all">
                 <h3>All Together</h3>
-                <h4>Total Watch Time</h4>
-                <p>{{ stats.total_watch_time }}</p>
+
+                <div class="summary-box">
+                    <h4>Total Watch Time</h4>
+                    <p><strong>Overall:</strong> {{ stats.total_watch_time }}</p>
+                    <p><strong>TV Shows:</strong> {{ stats.tv_watch_time }}</p>
+                    <p><strong>Movies:</strong> {{ stats.movie_watch_time }}</p>
+                </div>
+
+                <h4>Continue Watching</h4>
+                {% if continue_watching %}
+                    {% for profile, shows in continue_watching.items() %}
+                        <h5 class="mt-4">{{ profile }}</h5>
+                        {% if shows %}
+                            {% for show in shows %}
+                            <div class="continue-card">
+                                <h5>{{ show["Main Title"] }}</h5>
+                                <div class="continue-meta"><strong>Last watched:</strong> {{ show["Last Title"] }}</div>
+                                <div class="continue-meta"><strong>Progress:</strong> {{ show["Progress"] }}</div>
+                                <div class="continue-meta"><strong>When:</strong> {{ show["Last Watch Time"] }}</div>
+                                <div class="continue-meta"><strong>Device:</strong> {{ show["Device Type"] }}</div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="continue-empty">No continue watching entries for this profile.</p>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p class="continue-empty">No continue watching data available.</p>
+                {% endif %}
 
                 <h4>Top 10 Most-Watched TV Shows</h4>
                 <table class="table table-striped">
@@ -128,11 +223,33 @@
                     </tbody>
                 </table>
             </div>
+
             {% for profile, profile_stat in profile_stats.items() %}
-            <div class="tab-pane fade" id="{{ profile }}" role="tabpanel" aria-labelledby="tab-{{ profile }}">
+            {% set safe_profile = profile|replace(' ', '_')|replace('/', '_') %}
+            <div class="tab-pane fade" id="{{ safe_profile }}" role="tabpanel" aria-labelledby="tab-{{ safe_profile }}">
                 <h3>{{ profile }}</h3>
-                <h4>Total Watch Time</h4>
-                <p>{{ profile_stat.total_watch_time }}</p>
+
+                <div class="summary-box">
+                    <h4>Total Watch Time</h4>
+                    <p><strong>Overall:</strong> {{ profile_stat.total_watch_time }}</p>
+                    <p><strong>TV Shows:</strong> {{ profile_stat.tv_watch_time }}</p>
+                    <p><strong>Movies:</strong> {{ profile_stat.movie_watch_time }}</p>
+                </div>
+
+                <h4>Continue Watching</h4>
+                {% if continue_watching.get(profile) %}
+                    {% for show in continue_watching[profile] %}
+                    <div class="continue-card">
+                        <h5>{{ show["Main Title"] }}</h5>
+                        <div class="continue-meta"><strong>Last watched:</strong> {{ show["Last Title"] }}</div>
+                        <div class="continue-meta"><strong>Progress:</strong> {{ show["Progress"] }}</div>
+                        <div class="continue-meta"><strong>When:</strong> {{ show["Last Watch Time"] }}</div>
+                        <div class="continue-meta"><strong>Device:</strong> {{ show["Device Type"] }}</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="continue-empty">No continue watching data for this profile.</p>
+                {% endif %}
 
                 <h4>Top 10 Most-Watched TV Shows</h4>
                 <table class="table table-striped">
